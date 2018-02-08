@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miduodai.loanService.dao.OtherEvidenceMapper" >
+  <resultMap id="BaseResultMap" type="com.miduodai.loanService.beans.entity.OtherEvidence" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="users_id" property="usersId" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="gongjijin_account" property="gongjijinAccount" jdbcType="VARCHAR" />
+    <result column="gongjijin_pwd" property="gongjijinPwd" jdbcType="VARCHAR" />
+    <result column="xuexin_account" property="xuexinAccount" jdbcType="VARCHAR" />
+    <result column="xuexin_pwd" property="xuexinPwd" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, users_id, city, gongjijin_account, gongjijin_pwd, xuexin_account, xuexin_pwd
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from other_evidence
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from other_evidence
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.miduodai.loanService.beans.entity.OtherEvidence" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      id
+    </selectKey>
+    insert into other_evidence (users_id, city, gongjijin_account, 
+      gongjijin_pwd, xuexin_account, xuexin_pwd
+      )
+    values (#{usersId,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, #{gongjijinAccount,jdbcType=VARCHAR}, 
+      #{gongjijinPwd,jdbcType=VARCHAR}, #{xuexinAccount,jdbcType=VARCHAR}, #{xuexinPwd,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.miduodai.loanService.beans.entity.OtherEvidence" useGeneratedKeys="true" keyProperty="id">
+    insert into other_evidence
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="usersId != null" >
+        users_id,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="gongjijinAccount != null" >
+        gongjijin_account,
+      </if>
+      <if test="gongjijinPwd != null" >
+        gongjijin_pwd,
+      </if>
+      <if test="xuexinAccount != null" >
+        xuexin_account,
+      </if>
+      <if test="xuexinPwd != null" >
+        xuexin_pwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="usersId != null" >
+        #{usersId,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="gongjijinAccount != null" >
+        #{gongjijinAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="gongjijinPwd != null" >
+        #{gongjijinPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="xuexinAccount != null" >
+        #{xuexinAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="xuexinPwd != null" >
+        #{xuexinPwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    ON conflict(users_id) DO NOTHING
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.miduodai.loanService.beans.entity.OtherEvidence" >
+    update other_evidence
+    <set >
+      <if test="usersId != null" >
+        users_id = #{usersId,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="gongjijinAccount != null" >
+        gongjijin_account = #{gongjijinAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="gongjijinPwd != null" >
+        gongjijin_pwd = #{gongjijinPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="xuexinAccount != null" >
+        xuexin_account = #{xuexinAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="xuexinPwd != null" >
+        xuexin_pwd = #{xuexinPwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.miduodai.loanService.beans.entity.OtherEvidence" >
+    update other_evidence
+    set users_id = #{usersId,jdbcType=INTEGER},
+      city = #{city,jdbcType=VARCHAR},
+      gongjijin_account = #{gongjijinAccount,jdbcType=VARCHAR},
+      gongjijin_pwd = #{gongjijinPwd,jdbcType=VARCHAR},
+      xuexin_account = #{xuexinAccount,jdbcType=VARCHAR},
+      xuexin_pwd = #{xuexinPwd,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

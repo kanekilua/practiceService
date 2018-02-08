@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miduodai.loanService.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.miduodai.loanService.beans.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="inviter_code" property="inviterCode" jdbcType="VARCHAR" />
+    <result column="quota_total" property="quotaTotal" jdbcType="INTEGER" />
+    <result column="quota_remain" property="quotaRemain" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, password, inviter_code, quota_total, quota_remain
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from users
+    where phone = #{phone,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from users
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.miduodai.loanService.beans.entity.User" useGeneratedKeys="true" keyProperty="id">
+    <!--<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >-->
+      <!--SELECT (SELECT id FROM users WHERE phone = #{phone})id FROM DUAL-->
+    <!--</selectKey>-->
+    insert into users (phone, password, inviter_code,
+      quota_total, quota_remain)
+    values (#{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{inviterCode,jdbcType=VARCHAR},
+      #{quotaTotal,jdbcType=INTEGER}, #{quotaRemain,jdbcType=INTEGER})
+    ON conflict(phone) DO
+    UPDATE SET password = #{password,jdbcType=VARCHAR},
+    inviter_code = #{inviterCode,jdbcType=VARCHAR},
+    quota_total = #{quotaTotal,jdbcType=INTEGER},
+    quota_remain = #{quotaRemain,jdbcType=INTEGER}
+  </insert>
+  <insert id="insertSelective" parameterType="com.miduodai.loanService.beans.entity.User" >
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="inviterCode != null" >
+        inviter_code,
+      </if>
+      <if test="quotaTotal != null" >
+        quota_total,
+      </if>
+      <if test="quotaRemain != null" >
+        quota_remain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterCode != null" >
+        #{inviterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="quotaTotal != null" >
+        #{quotaTotal,jdbcType=INTEGER},
+      </if>
+      <if test="quotaRemain != null" >
+        #{quotaRemain,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.miduodai.loanService.beans.entity.User" useGeneratedKeys="true" keyProperty="id">
+    update users
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterCode != null" >
+        inviter_code = #{inviterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="quotaTotal != null" >
+        quota_total = #{quotaTotal,jdbcType=INTEGER},
+      </if>
+      <if test="quotaRemain != null" >
+        quota_remain = #{quotaRemain,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.miduodai.loanService.beans.entity.User" useGeneratedKeys="true" keyProperty="id" >
+    update users
+    set phone = #{phone,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      inviter_code = #{inviterCode,jdbcType=VARCHAR},
+      quota_total = #{quotaTotal,jdbcType=INTEGER},
+      quota_remain = #{quotaRemain,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

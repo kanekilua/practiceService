@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miduodai.loanService.dao.UserLoanMapper" >
+  <resultMap id="BaseResultMap" type="com.miduodai.loanService.beans.entity.UserLoan" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="users_id" property="usersId" jdbcType="INTEGER" />
+    <result column="funds" property="funds" jdbcType="INTEGER" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="loan_date" property="loanDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, users_id, funds, times, loan_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_loan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_loan
+    where users_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_loan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.miduodai.loanService.beans.entity.UserLoan" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT currval('serial_project_id')
+    </selectKey>
+    insert into user_loan (users_id, funds, times, 
+      loan_date)
+    values (#{usersId,jdbcType=INTEGER}, #{funds,jdbcType=INTEGER}, #{times,jdbcType=INTEGER}, 
+      #{loanDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.miduodai.loanService.beans.entity.UserLoan" >
+    insert into user_loan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="usersId != null" >
+        users_id,
+      </if>
+      <if test="funds != null" >
+        funds,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="loanDate != null" >
+        loan_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="usersId != null" >
+        #{usersId,jdbcType=INTEGER},
+      </if>
+      <if test="funds != null" >
+        #{funds,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="loanDate != null" >
+        #{loanDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.miduodai.loanService.beans.entity.UserLoan" >
+    update user_loan
+    <set >
+      <if test="usersId != null" >
+        users_id = #{usersId,jdbcType=INTEGER},
+      </if>
+      <if test="funds != null" >
+        funds = #{funds,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="loanDate != null" >
+        loan_date = #{loanDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.miduodai.loanService.beans.entity.UserLoan" >
+    update user_loan
+    set users_id = #{usersId,jdbcType=INTEGER},
+      funds = #{funds,jdbcType=INTEGER},
+      times = #{times,jdbcType=INTEGER},
+      loan_date = #{loanDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE xml>-->
+<!-- Log4j 2.x 配置文件。每30秒自动检查和应用配置文件的更新； -->
+<Configuration status="warn" monitorInterval="30" strict="true" schema="Log4J-V2.2.xsd">
+    <Appenders>
+        <!-- 输出到控制台 -->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <!-- 需要记录的级别 -->
+            <!--<ThresholdFilter level="debug" onMatch="ACCEPT" onMisMatch="DENY"/>-->
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMisMatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMisMatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t [%F:%L] - %m%n"/>
+        </Console>
+
+        <!-- 输出到控制台 -->
+        <Console name="CONSOLE_ERROR" target="SYSTEM_ERR">
+            <!-- 需要记录的级别 -->
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMisMatch="DENY"/>
+            </Filters>
+            <!--<ThresholdFilter level="debug" onMatch="ACCEPT" onMisMatch="DENY"/>-->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t [%F:%L] - %m%n"/>
+        </Console>
+
+        <!-- 输出到文件，按天或者超过80MB分割 -->
+        <RollingFile name="INFO" fileName="./logs/INFO.log"
+                     filePattern="./logs/$${date:yyyy-MM}/INFO-%d{yyyy-MM-dd}-%i.log.gz">
+            <!-- 需要记录的级别 -->
+            <!-- <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" /> -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}[%4p %t] [%F:%L] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="80 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="ERROR" fileName="./logs/ERROR.log"
+                     filePattern="./logs/$${date:yyyy-MM}/ERROR-%d{yyyy-MM-dd}-%i.log.gz">
+            <!-- 需要记录的级别 -->
+            <!-- <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" /> -->
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMisMatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}[%4p %t] [%F:%L] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="30 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="SQL" fileName="./logs/sql.log"
+                     filePattern="./logs/$${date:yyyy-MM}/SQL-%d{yyyy-MM-dd}-%i.log.gz">
+            <!-- 需要记录的级别 -->
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMisMatch="DENY"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}[%4p %t] [%F:%L] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="30 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="debug"> <!-- 全局配置 -->
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="CONSOLE_ERROR"/>
+            <AppenderRef ref="INFO"/>
+            <AppenderRef ref="ERROR"/>
+        </Root>
+        <!-- 为sql语句配置特殊的Log级别，方便调试 -->
+        <Logger name="co.daheng.service.cms.dao" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="SQL"/>
+        </Logger>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,38 @@
+#server:
+#  port: 8080
+#  context-path: /webapi/loanApp
+server:
+  port: 8099
+  context-path: /webapi/loanApp
+
+
+spring:
+  application:
+    name: loan_service
+
+tomcat:
+  uri-encoding: UTF-8
+  remote-ip-header: x-forwarded-for
+
+druid:
+      url: jdbc:postgresql://127.0.0.1:5432/miduodai?characterEncoding=UTF-8
+      username: postgres
+      password: dbms4Fna
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+#druid:
+#      url: jdbc:postgresql://127.0.0.1:5666/miduodai?characterEncoding=UTF-8
+#      username: postgres
+#      password: Miduodai@1101
+#      initial-size: 1
+#      min-idle: 1
+#      max-active: 20
+#      test-on-borrow: true
+
+mybatis:
+    type-aliases-package: com.miduodai.loanService.beans.entity
+    mapper-locations: classpath:mapper/*.xml
+
+
